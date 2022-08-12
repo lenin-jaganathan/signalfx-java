@@ -30,10 +30,10 @@ final class DeltaHistogramSnapshot {
     // TODO: Determine if we need to synchronize, in case multiple calls in parallel.
     HistogramSnapshot calculateSnapshot(HistogramSnapshot currentSnapshot) {
         HistogramSnapshot deltaSnapshot = new HistogramSnapshot(
-                currentSnapshot.count() - lastSnapshot.count(),
-                currentSnapshot.total() - lastSnapshot.total(),
+                currentSnapshot.count(), // Count is a step tupple, keep count from current.
+                currentSnapshot.total(),// Sum is a step tupple, keep count from current.
                 currentSnapshot.max(),  // Max cannot be calculated as delta, keep the current.
-                null,  // No percentile values
+                currentSnapshot.percentileValues(),  // Keep the percentile from current
                 deltaHistogramCounts(currentSnapshot),
                 currentSnapshot::outputSummary);
         lastSnapshot = currentSnapshot;
